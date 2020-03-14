@@ -24,9 +24,26 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        <li>@Html.ActionLink("Role", "Index", "Role")</li>
+                        if (User.IsInRole("Customer"))
+                        {
+                            <li>@Html.ActionLink("Book Sitter", "Contact", "Home")</li>
+                        }
+                        else if (User.IsInRole("Sitter"))
+                        {
+                            <li>@Html.ActionLink("Reservations", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Make Schedules", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        }
+                        else if (User.IsInRole("Customer Manager"))
+                        {
+                            <li>@Html.ActionLink("Manage Customers", "Contact", "Home")</li>
+
+                        }
+                        else if (User.IsInRole("Quality Manager"))
+                        {
+                            <li>@Html.ActionLink("Manage Sitters", "Index", "Role")</li>
+                        }
+                        <!--<li>@Html.ActionLink("About", "About", "Home")</li>-->
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
