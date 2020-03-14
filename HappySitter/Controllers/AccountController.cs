@@ -78,7 +78,8 @@ namespace HappySitter.Controllers
             return View();
         }
 
-        //
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -92,7 +93,8 @@ namespace HappySitter.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var user = db.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
