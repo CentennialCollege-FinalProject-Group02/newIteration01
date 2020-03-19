@@ -51,6 +51,6 @@ namespace HappySitter.Models
             return new ApplicationDbContext();
         }
 
-        
+        public System.Data.Entity.DbSet<HappySitter.Models.Schedule> Schedules { get; set; }
     }
 }

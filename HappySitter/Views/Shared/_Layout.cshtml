@@ -6,6 +6,14 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+    <script type="text/javascript" src="/scripts/moment.min.js"></script>
+
+    <script type="text/javascript" src="/scripts/bootstrap-datetimepicker.js"></script>
+    <link rel="stylesheet" href="/Content/bootstrap-datetimepicker.css" />
 
 </head>
 <body>
@@ -31,7 +39,7 @@
                         else if (User.IsInRole("Sitter"))
                         {
                             <li>@Html.ActionLink("Reservations", "Contact", "Home")</li>
-                            <li>@Html.ActionLink("Make Schedules", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Build Schedules", "Index", "Schedules")</li>
                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         }
                         else if (User.IsInRole("Customer Manager"))
@@ -58,8 +66,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    
+@RenderSection("scripts", required: false)
 </body>
 </html>
