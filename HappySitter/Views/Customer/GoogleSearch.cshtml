@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "GoogleSearch";
+}
+
+
+<div class="page-header">
+    <h2 class="center-block" style="align-content:center">GoogleSearch</h2>
+</div>
+<div class="pager">
+    <div class="col-md-9" style="align-content:center">
+        <form method="get" style="width: 803px">
+            <label>Address:</label><input type="search" name="GoogleSearch" /><br />
+            <br />
+            &nbsp;&nbsp;&nbsp;
+            <button class="btn">Current Location</button>
+            <br />
+            <br />
+            <label>Date:</label>
+            <input type="date" name="Date" />
+            <br />
+            <br />
+            <label>Time:</label>
+            <input type="text" name="timestart" style="width: 64px" />
+            <label> TO </label>
+            <input type="text" name="timeend" style="width: 70px" />
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+</div>
+<div class="glyphicon-map-marker">
+    @*Google Map Div*@
+</div>
