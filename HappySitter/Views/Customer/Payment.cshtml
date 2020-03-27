@@ -1,0 +1,54 @@
+﻿
+<head>
+    <style type="text/css">
+        .radio {
+            width: 571px;
+        }
+    </style>
+</head>
+@{
+    ViewBag.Title = "Payment";
+}
+
+<div class="panel-body">
+    <form>
+        <label>Payment Method</label>
+        <div class="form-group">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="Method" value="MasterCard">
+                    MasterCard
+                </label>
+                <label>
+                    <input type="radio" name="Method" value="Visa" />
+                    Visa
+                </label>
+                <label>
+                    <input type="radio" name="Method" value="AE" />
+                    AE
+                </label>
+
+            </div>
+        </div>
+
+        <br />
+        <label class="label" style="color:black">Card Number</label>
+        <input type="number" name="cardnum" />
+        <br />
+        <br />
+        <label class="label" style="color:black">Expiration Date</label>
+        <input type="date" name="exdate" />
+        <br />
+        <br />
+        <label class="label" style="color:black">Security Code</label>
+        <input type="number" name="secCode" />
+        <br />
+        <br />
+        <label class="label" style="color:black">Amount</label>
+        <input type="number" name="amount" />
+        <br />
+    </form>
+    <br />
+    <input type="submit" value="Pay" class="btn-default" />
+    <input type="button" value="Canel" class="btn-default" />
+</div>
