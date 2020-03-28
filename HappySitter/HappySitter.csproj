@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="CustomExceptions\InvalidGeocodeInfoException.cs" />
@@ -188,10 +189,24 @@
     <Compile Include="Migrations\202003281244010_Add AccountActiveStatus and Blocking Acoount feature.Designer.cs">
       <DependentUpon>202003281244010_Add AccountActiveStatus and Blocking Acoount feature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003281827094_Add Reservation Controller and table.cs" />
+    <Compile Include="Migrations\202003281827094_Add Reservation Controller and table.Designer.cs">
+      <DependentUpon>202003281827094_Add Reservation Controller and table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003281838428_Add SitterUserName to Reservation table.cs" />
+    <Compile Include="Migrations\202003281838428_Add SitterUserName to Reservation table.Designer.cs">
+      <DependentUpon>202003281838428_Add SitterUserName to Reservation table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003282024301_add cost column on Reservations Table.cs" />
+    <Compile Include="Migrations\202003282024301_add cost column on Reservations Table.Designer.cs">
+      <DependentUpon>202003282024301_add cost column on Reservations Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\ReservationViewModels.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -208,6 +223,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\js\CustomGoogleMapApi.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -354,6 +370,12 @@
     <Content Include="Views\Account\ListOfUsers.cshtml" />
     <Content Include="Views\Account\UserDetails.cshtml" />
     <Content Include="Views\Account\UserEdit.cshtml" />
+    <Content Include="Views\Reservations\Create.cshtml" />
+    <Content Include="Views\Reservations\Delete.cshtml" />
+    <Content Include="Views\Reservations\Details.cshtml" />
+    <Content Include="Views\Reservations\Edit.cshtml" />
+    <Content Include="Views\Reservations\Index.cshtml" />
+    <Content Include="Views\Reservations\SearchSitter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -380,6 +402,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003281244010_Add AccountActiveStatus and Blocking Acoount feature.resx">
       <DependentUpon>202003281244010_Add AccountActiveStatus and Blocking Acoount feature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003281827094_Add Reservation Controller and table.resx">
+      <DependentUpon>202003281827094_Add Reservation Controller and table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003281838428_Add SitterUserName to Reservation table.resx">
+      <DependentUpon>202003281838428_Add SitterUserName to Reservation table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003282024301_add cost column on Reservations Table.resx">
+      <DependentUpon>202003282024301_add cost column on Reservations Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

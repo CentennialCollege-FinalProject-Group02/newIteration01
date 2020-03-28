@@ -7,12 +7,12 @@ namespace HappySitter.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.AspNetUsers", "AccountActiveStatus", c => c.Int(nullable: false, defaultValue:2));
+            //AddColumn("dbo.AspNetUsers", "AccountActiveStatus", c => c.Int(nullable: false, defaultValue:2));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.AspNetUsers", "AccountActiveStatus");
+            //DropColumn("dbo.AspNetUsers", "AccountActiveStatus");
         }
     }
 }

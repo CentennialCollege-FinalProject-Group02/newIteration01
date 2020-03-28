@@ -34,7 +34,7 @@
                     {
                         if (User.IsInRole("Customer"))
                         {
-                            <li>@Html.ActionLink("Book Sitter", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Book Sitter", "Index", "Reservations")</li>
                         }
                         else if (User.IsInRole("Sitter"))
                         {
