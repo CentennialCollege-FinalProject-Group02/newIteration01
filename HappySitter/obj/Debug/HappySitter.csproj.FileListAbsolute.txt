@@ -322,3 +322,4 @@ D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.cspro
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.csproj.CopyComplete
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.dll
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.pdb
+D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.AddAccountActiveStatusandBlockingAcoountfeature.resources

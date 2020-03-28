@@ -23,8 +23,7 @@ namespace HappySitter.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
-        ApplicationDbContext _db = new ApplicationDbContext();
-
+        
         public AccountController()
         {
         }
@@ -81,7 +80,7 @@ namespace HappySitter.Controllers
             return View();
         }
 
-        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // POST: /Account/Login
         [HttpPost]
@@ -97,7 +96,21 @@ namespace HappySitter.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var user = db.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+
+            if (user.AccountActiveStatus == AccountActiveStatus.IsBlocked)
+            {
+                ModelState.AddModelError("", "Your ID was blocked. If you have any questions, please contact our Manager. Thanks.");
+                return View(model);
+            }
+
+            if (user.AccountActiveStatus == AccountActiveStatus.IsWatingVerification)
+            {
+                ModelState.AddModelError("", "Your ID is wating Verification by a Manager. If you have any questions, please contact our Manager. Thanks.");
+                return View(model);
+            }
+
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            //UserManager.FindByEmailAsync()
             switch (result)
             {
                 case SignInStatus.Success:
@@ -196,19 +209,22 @@ namespace HappySitter.Controllers
                 }
                 catch (InvalidGeocodeInfoException e)
                 {
-                    
+
                 }
 
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName, Email = model.Email,
+                    UserName = model.UserName,
+                    Email = model.Email,
                     StreetAddress = model.UserName,
                     AddressLine2 = model.AddressLine2,
                     City = model.City,
                     Province = model.Province,
                     PostalCode = model.PostalCode,
                     Latitude = model.Latitude,
-                    Longitude = model.Longitude
+                    Longitude = model.Longitude,
+                    //Sitter need to be verified by QualityManager before activation of their account
+                    AccountActiveStatus = model.RoleName == "Sitter" ? AccountActiveStatus.IsWatingVerification :  AccountActiveStatus.IsActivated
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -473,14 +489,14 @@ namespace HappySitter.Controllers
             if (User.IsInRole("QualityManager"))
             {
                 var roleId = RoleManager.FindByName("Sitter").Id;
-                var usersInRole = _db.Users.Include(d => d.Roles).Where(d => d.Roles.Any(r => r.RoleId == roleId));
+                var usersInRole = db.Users.Include(d => d.Roles).Where(d => d.Roles.Any(r => r.RoleId == roleId));
                 return View(usersInRole);
             }
 
             if (User.IsInRole("CustomerManager"))
             {
                 var roleId = RoleManager.FindByName("Customer").Id;
-                var usersInRole = _db.Users.Include(d => d.Roles).Where(d => d.Roles.Any(r => r.RoleId == roleId));
+                var usersInRole = db.Users.Include(d => d.Roles).Where(d => d.Roles.Any(r => r.RoleId == roleId));
                 return View(usersInRole);
             }
 
@@ -494,32 +510,97 @@ namespace HappySitter.Controllers
         {
             if (id == null)
             {
-                  return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             //var user = UserManager.FindByIdAsync(id);
-            var user = _db.Users.Find(id);
+            var user = db.Users.Find(id);
 
             if (user == null)
             {
                 return HttpNotFound();
             }
-            return  View(user);
+            return View(user);
+        }
+        
+        
+        public ActionResult UserBlock([Bind(Include = "Id")] ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = db.Users.Find(applicationUser.Id);
+
+                user.AccountActiveStatus = AccountActiveStatus.IsBlocked;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("ListOfUsers");
+            }
+            return RedirectToAction("UserDetails");
+        }
+        
+        public ActionResult UserVerified([Bind(Include = "Id")] ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = db.Users.Find(applicationUser.Id);
+
+                user.AccountActiveStatus = AccountActiveStatus.IsActivated;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("ListOfUsers");
+            }
+            return RedirectToAction("UserDetails");
         }
 
+        [Authorize]
+        public ActionResult UserEdit(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult UserBlock([Bind(Include = "Id,StreetAddress,AddressLine2,City,Province,PostalCode,Latitude,Longitude,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(applicationUser).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(applicationUser);
-        //}
+        // POST: ApplicationUsers/Edit/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserEdit([Bind(Include = "Id,StreetAddress,AddressLine2,City,Province,PostalCode,Latitude,Longitude,AccountActiveStatus,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    GeocodeValue geocodeValue;
+                    geocodeValue = GeocodingUtil.ConvertAddressToGeocode(AddressUtil.BuildAddrString(user.StreetAddress, user.AddressLine2, user.City, user.Province, user.PostalCode));
+                    user.Latitude = geocodeValue.Latitude;
+                    user.Longitude = geocodeValue.Longitude;
+                }
+                catch (InvalidGeocodeInfoException e)
+                {
+
+                }
+
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+
+                if (User.IsInRole("QualityManager") || User.IsInRole("CustomerManager"))
+                {
+                    return RedirectToAction("ListOfUsers");
+                }
+
+                return RedirectToAction("Index","Manage"); //Sitter, Customer
+
+            }
+            return View(user);
+        }
 
 
         protected override void Dispose(bool disposing)

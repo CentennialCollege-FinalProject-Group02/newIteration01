@@ -184,6 +184,10 @@
     <Compile Include="Migrations\202003181741212_change_typeOfScheduleClass.Designer.cs">
       <DependentUpon>202003181741212_change_typeOfScheduleClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003281244010_Add AccountActiveStatus and Blocking Acoount feature.cs" />
+    <Compile Include="Migrations\202003281244010_Add AccountActiveStatus and Blocking Acoount feature.Designer.cs">
+      <DependentUpon>202003281244010_Add AccountActiveStatus and Blocking Acoount feature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -348,8 +352,8 @@
     <Content Include="Views\Schedules\Edit.cshtml" />
     <Content Include="Views\Schedules\Index.cshtml" />
     <Content Include="Views\Account\ListOfUsers.cshtml" />
-    <Content Include="Views\Account\ListOfCustomers.cshtml" />
     <Content Include="Views\Account\UserDetails.cshtml" />
+    <Content Include="Views\Account\UserEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -373,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003181741212_change_typeOfScheduleClass.resx">
       <DependentUpon>202003181741212_change_typeOfScheduleClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003281244010_Add AccountActiveStatus and Blocking Acoount feature.resx">
+      <DependentUpon>202003281244010_Add AccountActiveStatus and Blocking Acoount feature.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

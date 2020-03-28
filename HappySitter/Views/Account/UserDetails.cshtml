@@ -1,10 +1,13 @@
-﻿@model HappySitter.Models.ApplicationUser
+﻿@using HappySitter.Models
+@model HappySitter.Models.ApplicationUser
 
 @{
     ViewBag.Title = "User Details";
 }
 
 <h2>User Details</h2>
+
+@Html.HiddenFor(model => model.Id)
 
 <div>
     <hr />
@@ -80,23 +83,32 @@
         <dd>
             @Html.DisplayFor(model => model.AccessFailedCount)
         </dd>
-
-
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountActiveStatus)
+        </dt>
+        <dd>
+            @Enum.GetName(typeof(AccountActiveStatus), Model.AccountActiveStatus)
+        </dd>
+        
         <hr />
         <dt>
 
         </dt>
         <dd>
-            @if (User.IsInRole("QualityManager"))
+            <!-- Only QualityManager can verify Sitters.-->
+            @if (User.IsInRole("QualityManager") && Model.AccountActiveStatus == AccountActiveStatus.IsWatingVerification)
             {
-                @Html.ActionLink("Verify User", "VerifyUser", new { id = Model.Id }, new { @class = "btn btn-primary", data_ajax = "false" })
+                @Html.ActionLink("Verify User", "UserVerified", new { id = Model.Id }, new { @class = "btn btn-primary", data_ajax = "false" })
+            }
+
+            @if (Model.AccountActiveStatus != AccountActiveStatus.IsBlocked)
+            {
                 @:&nbsp;&nbsp;
-                @Html.ActionLink("Block User", "BlockUser", new { id = Model.Id }, new { @class = "btn btn-warning", data_ajax = "false" })
+                @Html.ActionLink("Block User", "UserBlock", new { id = Model.Id }, new { @class = "btn btn-warning", data_ajax = "false" })
             }
-            else //CustomerManager
-            {
-                @Html.ActionLink("Block User", "BlockUser", new { id = Model.Id }, new { @class = "btn btn-warning", data_ajax = "false" })
-            }
+
+            &nbsp;&nbsp;
+            @Html.ActionLink("Edit", "UserEdit", new { id = Model.Id }, new { @class = "btn btn-success", data_ajax = "false" })
             &nbsp;&nbsp;
             @Html.ActionLink("Back to List", "ListOfUsers", null, new { @class = "btn btn-default", data_ajax = "false" })
         </dd>

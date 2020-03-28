@@ -1,4 +1,6 @@
-﻿@model IEnumerable<HappySitter.Models.ApplicationUser>
+﻿@using HappySitter.Models
+@using Newtonsoft.Json.Converters
+@model IEnumerable<HappySitter.Models.ApplicationUser>
 @{
     ViewBag.Title = User.IsInRole("QualityManager") ? "List Of Sitter" : "List Of Customer";
 }
@@ -30,6 +32,9 @@
                 Address
             </th>
             <th>
+                Status
+            </th>
+            <th>
                 Action
             </th>
         </tr>
@@ -40,26 +45,28 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td data-id="@item.Id">
-                        @item.Email
-                    </td>
-                    <td>
-                        @item.UserName
-                    </td>
-                    <td>
-                        @item.GetFormattedPhoneNumber()
-                    </td>
-                    <td>
-                        @item.StreetAddress
-                    </td>
+            <tr>
+                <td data-id="@item.Id">
+                    @item.Email
+                </td>
+                <td>
+                    @item.UserName
+                </td>
+                <td>
+                    @item.GetFormattedPhoneNumber()
+                </td>
+                <td>
+                    @item.StreetAddress
+                </td>
+                <td>
+                    @Enum.GetName(typeof(AccountActiveStatus),item.AccountActiveStatus)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "UserDetails", new { id = item.Id }, new { @class = "btn btn-info", data_ajax = "false" })
+                    @*<button type="button" class="btn btn-info" data-user-unique-id="@item.Id">Detail</button>*@
+                </td>
 
-                    <td>
-                        @Html.ActionLink("Details", "UserDetails", new { id = item.Id }, new { @class = "btn btn-info", data_ajax = "false" })
-                        @*<button type="button" class="btn btn-info" data-user-unique-id="@item.Id">Detail</button>*@
-                    </td>
-
-                </tr>
+            </tr>
             }
         </tbody>
     }

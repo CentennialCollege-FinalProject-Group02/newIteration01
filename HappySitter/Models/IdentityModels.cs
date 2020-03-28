@@ -7,6 +7,13 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HappySitter.Models
 {
+    public enum AccountActiveStatus
+    {
+        IsBlocked = 0 
+        , IsWatingVerification
+        , IsActivated
+    }
+
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
@@ -20,6 +27,7 @@ namespace HappySitter.Models
         public string PostalCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public AccountActiveStatus AccountActiveStatus { get; set; } 
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -61,6 +69,5 @@ namespace HappySitter.Models
 
         public System.Data.Entity.DbSet<HappySitter.Models.Schedule> Schedules { get; set; }
 
-        
     }
 }
