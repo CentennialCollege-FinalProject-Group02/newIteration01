@@ -347,6 +347,9 @@
     <Content Include="Views\Schedules\Delete.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
     <Content Include="Views\Schedules\Index.cshtml" />
+    <Content Include="Views\Account\ListOfUsers.cshtml" />
+    <Content Include="Views\Account\ListOfCustomers.cshtml" />
+    <Content Include="Views\Account\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

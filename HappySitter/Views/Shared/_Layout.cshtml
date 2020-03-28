@@ -42,14 +42,14 @@
                             <li>@Html.ActionLink("Build Schedules", "Index", "Schedules")</li>
                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         }
-                        else if (User.IsInRole("Customer Manager"))
+                        else if (User.IsInRole("CustomerManager"))
                         {
-                            <li>@Html.ActionLink("Manage Customers", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Manage Customers", "ListOfUsers", "Account")</li>
 
                         }
-                        else if (User.IsInRole("Quality Manager"))
+                        else if (User.IsInRole("QualityManager"))
                         {
-                            <li>@Html.ActionLink("Manage Sitters", "Index", "Role")</li>
+                            <li>@Html.ActionLink("Manage Sitters", "ListOfUsers", "Account")</li>
                         }
                         <!--<li>@Html.ActionLink("About", "About", "Home")</li>-->
                     }

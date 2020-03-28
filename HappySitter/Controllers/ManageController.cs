@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,6 +17,8 @@ namespace HappySitter.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        //private ApplicationRoleManager _roleManager;
+        //
 
         public ManageController()
         {
@@ -49,6 +53,8 @@ namespace HappySitter.Controllers
                 _userManager = value;
             }
         }
+
+        
 
         //
         // GET: /Manage/Index
@@ -333,7 +339,10 @@ namespace HappySitter.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        
+
+
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -384,6 +393,8 @@ namespace HappySitter.Controllers
             Error
         }
 
-#endregion
+  
+
+        #endregion
     }
 }

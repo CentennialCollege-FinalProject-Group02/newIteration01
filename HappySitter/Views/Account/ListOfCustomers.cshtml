@@ -1,0 +1,82 @@
+﻿@model IEnumerable<HappySitter.Models.ApplicationUser>
+@{
+    ViewBag.Title = "ListOfCustomers";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#ListUsersTable').DataTable();
+    } );
+
+</script>
+
+<h2>List of Customers</h2>
+<hr/>
+<table id="ListUsersTable" class="display cursorDefault ltrListTable" style="" data-ajax="false">
+    <thead>
+        <tr>
+            <th>
+                Email(Id)
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+
+    </thead>
+    @if (Model.Any())
+    {
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td data-id="@item.Id">
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @item.PhoneNumber
+                    </td>
+                    <td>
+                        @item.StreetAddress
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-info" data-user-unique-id="@item.Id">Detail</button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    {
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        No users created yet
+                    <td>
+                </tr>
+            }
+        </tbody>
+
+    }
+</table>
+
+

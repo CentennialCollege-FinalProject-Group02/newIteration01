@@ -98,8 +98,6 @@ namespace HappySitter.Models
         public string PostalCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        
-
 
     }
 
@@ -130,5 +128,62 @@ namespace HappySitter.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class UserManagementViewModel
+    {
+        private ApplicationUser user;
+
+        public UserManagementViewModel(ApplicationUser user)
+        {
+            this.user = user;
+        }
+
+        public string Id
+        {
+            get
+            {
+                return user.Id;
+            }
+        
+        }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email {
+            get
+            {
+                return user.Email;
+            }
+        }
+
+        [Display(Name = "Full Name")]
+        public string UserName
+        {
+            get
+            {
+                return user.UserName;
+            }
+        }
+
+        public string RoleName
+        {
+            get
+            {
+                return user.Roles.ToString();
+            }
+        }
+        [Required]
+        [Phone]
+        [Display(Name = "PhoneNumber")]
+        public string PhoneNumber
+        {
+            get
+            {
+                return user.PhoneNumber;
+            }
+        }
+
     }
 }

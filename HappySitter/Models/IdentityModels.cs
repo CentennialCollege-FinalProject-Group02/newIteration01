@@ -28,6 +28,14 @@ namespace HappySitter.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string GetFormattedPhoneNumber()
+        {
+            if (PhoneNumber != null && PhoneNumber.Trim().Length == 10)
+                return string.Format("({0}) {1}-{2}", PhoneNumber.Substring(0, 3), PhoneNumber.Substring(3, 3), PhoneNumber.Substring(6, 4));
+
+            return PhoneNumber;
+        }
     }
 
     public class ApplicationRole : IdentityRole
@@ -52,5 +60,7 @@ namespace HappySitter.Models
         }
 
         public System.Data.Entity.DbSet<HappySitter.Models.Schedule> Schedules { get; set; }
+
+        
     }
 }

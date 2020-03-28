@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,6 +23,7 @@ namespace HappySitter.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
+        ApplicationDbContext _db = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -464,6 +467,61 @@ namespace HappySitter.Controllers
             return View();
         }
 
+        [Authorize(Roles = "QualityManager,CustomerManager")]
+        public ActionResult ListOfUsers()
+        {
+            if (User.IsInRole("QualityManager"))
+            {
+                var roleId = RoleManager.FindByName("Sitter").Id;
+                var usersInRole = _db.Users.Include(d => d.Roles).Where(d => d.Roles.Any(r => r.RoleId == roleId));
+                return View(usersInRole);
+            }
+
+            if (User.IsInRole("CustomerManager"))
+            {
+                var roleId = RoleManager.FindByName("Customer").Id;
+                var usersInRole = _db.Users.Include(d => d.Roles).Where(d => d.Roles.Any(r => r.RoleId == roleId));
+                return View(usersInRole);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+        }
+
+        [Authorize(Roles = "CustomerManager,QualityManager")]
+        // GET: ApplicationUsers/Details/5
+        public async Task<ActionResult> UserDetails(string id)
+        {
+            if (id == null)
+            {
+                  return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //var user = UserManager.FindByIdAsync(id);
+            var user = _db.Users.Find(id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return  View(user);
+        }
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult UserBlock([Bind(Include = "Id,StreetAddress,AddressLine2,City,Province,PostalCode,Latitude,Longitude,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(applicationUser).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(applicationUser);
+        //}
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -478,6 +536,12 @@ namespace HappySitter.Controllers
                 {
                     _signInManager.Dispose();
                     _signInManager = null;
+                }
+
+                if (_roleManager != null)
+                {
+                    _roleManager.Dispose();
+                    _roleManager = null;
                 }
             }
 
