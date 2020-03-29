@@ -22,3 +22,13 @@ select,
 textarea {
     max-width: 280px;
 }
+.lead{
+    text-align:center;
+}
+.jumbotron h1{
+    text-align:center;
+}
+footer{
+    text-align:center;
+}
+
