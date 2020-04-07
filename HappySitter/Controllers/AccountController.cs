@@ -175,7 +175,7 @@ namespace HappySitter.Controllers
         public ActionResult Register()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var role in RoleManager.Roles)
+            foreach (var role in RoleManager.Roles.Where(x => x.Name.Equals("Customer") || x.Name.Equals("Sitter")))
                 list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
             ViewBag.Roles = list;
             return View();
@@ -216,7 +216,7 @@ namespace HappySitter.Controllers
                 {
                     UserName = model.UserName,
                     Email = model.Email,
-                    StreetAddress = model.UserName,
+                    StreetAddress = model.StreetAddress,
                     AddressLine2 = model.AddressLine2,
                     City = model.City,
                     Province = model.Province,

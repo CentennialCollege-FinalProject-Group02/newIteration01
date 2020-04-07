@@ -27,7 +27,9 @@ namespace HappySitter.Models
         public string PostalCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public AccountActiveStatus AccountActiveStatus { get; set; } 
+        public AccountActiveStatus AccountActiveStatus { get; set; }
+        public double CostPerHour { get; set; }
+        public double PlatformFeePercentage { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

@@ -7,14 +7,17 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HappySitter.DAL;
 using HappySitter.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace HappySitter.Controllers
 {
     public class ReservationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private string googleApiKey = ConfigurationManager.AppSettings["GoogleApiKey"];
 
         // GET: Reservations
         public ActionResult Index()
@@ -33,12 +36,16 @@ namespace HappySitter.Controllers
 
         public ActionResult SearchSitter()
         {
-            ViewBag.ApiKey = ConfigurationManager.AppSettings["GoogleApiKey"];
+            ViewBag.ApiKey = googleApiKey;
 
             SearchSitterViewModel searchSitterViewModel = new SearchSitterViewModel()
             {
                 User = db.Users.Find(User.Identity.GetUserId())
             };
+
+            ViewBag.jsonData = "";
+
+
 
             //if (id == null)
             //{
@@ -50,6 +57,39 @@ namespace HappySitter.Controllers
             //    return HttpNotFound();
             //}
             return View(searchSitterViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SearchSitter(SearchSitterViewModel model)
+        {
+            ViewBag.ApiKey = googleApiKey;
+
+            if (ModelState.IsValid)
+            {
+                model.SitterListMarker = SqlService.GetAvailableSitters(model);
+
+                var user = db.Users.Find(User.Identity.GetUserId());
+                //Adding Customer's home location at the end of the list
+                model.SitterListMarker.Add(
+                    new GoogleMapMarker()
+                    {
+                        Id = user.Id,
+                        UserName = "MyLocation",
+                        Latitude = Convert.ToDouble(user.Latitude),
+                        Longitude = Convert.ToDouble(user.Longitude)
+                    });
+
+                //model.SetJsonSerializedSitterList();
+                ViewBag.jsonData = JsonConvert.SerializeObject(model.SitterListMarker);
+
+                if (model.SitterListMarker.Count == 1)
+                {
+                    ModelState.AddModelError("", "No Sitters are available. Please change your search conditions.");
+                }
+            }
+            
+            return View(model);
         }
 
 

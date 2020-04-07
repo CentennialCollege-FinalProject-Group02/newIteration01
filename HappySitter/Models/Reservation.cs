@@ -30,6 +30,7 @@ namespace HappySitter.Models
         public double PlatformFee { get; set; }
         public double TotalCost { get; set; }
         public double CostPerHour { get; set; }
+        public double Hst { get; set; }
         [Display(Name = "Status")]
         public ReservationStatus ReservationStatus { get; set; }
         [Display(Name = "Registered Date")]

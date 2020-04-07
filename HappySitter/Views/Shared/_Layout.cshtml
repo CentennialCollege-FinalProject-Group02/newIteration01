@@ -10,7 +10,9 @@
     @Scripts.Render("~/bundles/bootstrap")
 
 
+    <script type="text/javascript" src="/scripts/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="/scripts/moment.min.js"></script>
+    
 
     <script type="text/javascript" src="/scripts/bootstrap-datetimepicker.js"></script>
     <link rel="stylesheet" href="/Content/bootstrap-datetimepicker.css" />
@@ -29,7 +31,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @if (Request.IsAuthenticated)
                     {
                         if (User.IsInRole("Customer"))
@@ -62,7 +63,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Happy Sitter</p>
         </footer>
     </div>
 

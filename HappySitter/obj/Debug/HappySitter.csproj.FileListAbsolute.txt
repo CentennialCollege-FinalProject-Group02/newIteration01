@@ -314,7 +314,6 @@ D:\VIsualStudioRepository\HappySitterOrg\HappySitter\bin\Microsoft.Owin.Security
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\bin\Microsoft.Owin.Security.OAuth.xml
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.csprojAssemblyReference.cache
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.Addscheduletable.resources
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.change_typeOfScheduleClass.resources
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.csproj.GenerateResource.cache
@@ -326,3 +325,6 @@ D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migra
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.AddReservationControllerandtable.resources
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.AddSitterUserNametoReservationtable.resources
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.addcostcolumnonReservationsTable.resources
+D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.csprojAssemblyReference.cache
+D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.AddusertablecostPerHour.resources
+D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.addmorefieldonreservationtable.resources

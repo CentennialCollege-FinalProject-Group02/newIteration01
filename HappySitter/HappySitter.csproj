@@ -46,6 +46,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -98,9 +101,6 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -174,6 +174,13 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="CustomExceptions\InvalidGeocodeInfoException.cs" />
+    <Compile Include="DAL\DAL.cs" />
+    <Compile Include="DAL\DALFactory.cs" />
+    <Compile Include="DAL\DALUtils.cs" />
+    <Compile Include="DAL\SqlService.cs" />
+    <Compile Include="DAL\SqlParam.cs" />
+    <Compile Include="DAL\SqlQuery.cs" />
+    <Compile Include="DAL\ValidationUtil.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -201,6 +208,14 @@
     <Compile Include="Migrations\202003282024301_add cost column on Reservations Table.Designer.cs">
       <DependentUpon>202003282024301_add cost column on Reservations Table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004070147003_Add user table costPerHour.cs" />
+    <Compile Include="Migrations\202004070147003_Add user table costPerHour.Designer.cs">
+      <DependentUpon>202004070147003_Add user table costPerHour.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004070340517_add more field on reservation table.cs" />
+    <Compile Include="Migrations\202004070340517_add more field on reservation table.Designer.cs">
+      <DependentUpon>202004070340517_add more field on reservation table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -223,6 +238,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\icon\home.png" />
+    <Content Include="Content\icon\homegardenbusiness.png" />
+    <Content Include="Content\images\Home_babysitter01.jpg" />
     <Content Include="Content\js\CustomGoogleMapApi.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -411,6 +429,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003282024301_add cost column on Reservations Table.resx">
       <DependentUpon>202003282024301_add cost column on Reservations Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004070147003_Add user table costPerHour.resx">
+      <DependentUpon>202004070147003_Add user table costPerHour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004070340517_add more field on reservation table.resx">
+      <DependentUpon>202004070340517_add more field on reservation table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

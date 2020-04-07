@@ -1,22 +1,23 @@
-﻿@model HappySitter.Models.SearchSitterViewModel
+﻿@using Newtonsoft.Json
+@model HappySitter.Models.SearchSitterViewModel
 
 @{
     ViewBag.Title = "Create";
 }
 
 <style>
-    /* Always set the map height explicitly to define the size of the div
- * element that contains the map. */
-    #map {
-        min-height: 450px;
-        height: 100%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+       /* Always set the map height explicitly to define the size of the div
+    * element that contains the map. */
+       #map {
+           min-height: 450px;
+           height: 100%;
+       }
+       /* Optional: Makes the sample page fill the window. */
+       html, body {
+           height: 100%;
+           margin: 0;
+           padding: 0;
+       }
 </style>
 
 
@@ -24,6 +25,27 @@
 
 
 <script>
+
+    
+
+    @*<script>
+
+        function DataParse() {
+            var model = '@Html.Raw(Json.Encode(Model))';
+            var data = JSON.parse(model);
+
+            for (i = 0; i < data.length; i++) {
+                ......
+            }
+
+            </script>*@
+    var jsonModel = '@Html.Raw(ViewBag.jsonData)';
+    var jsonSitters;
+    if (jsonModel.length > 0)
+    {
+        jsonSitters = JSON.parse(jsonModel);
+    }
+    
 
     $(document).ready(function () {
 
@@ -37,26 +59,86 @@
             format: 'LT'
         });
 
+        //reservation from tomorrow
+        $('#datepicker1').data("DateTimePicker").date(moment().add(1, 'days'));
+
+        if ($("#FromTime").val() != "") {
+            $("#datetimepicker1").data("DateTimePicker").date($("#FromTime").val());
+        } else {
+            $("#datetimepicker1").data("DateTimePicker").date(new Date());
+        }
+        if ($("#ToTime").val() != "") {
+            $("#datetimepicker2").data("DateTimePicker").date($("#ToTime").val());
+        }
+    
+        $('#btnSearch').click(function (e) {
+
+            var serviceDate = $("#datepicker1").data("DateTimePicker").date().format("YYYY-MM-DD");
+            var fromTime = $("#datetimepicker1").data("DateTimePicker").date().format("HH:mm");
+            var toTime = $("#datetimepicker2").data("DateTimePicker").date().format("HH:mm");
+
+            console.log(fromTime + " " + toTime);
+
+            if (fromTime == null || toTime == null) {
+                alert("Please enter correct reservation Time.");
+                return false;
+            }
+            $("#ServiceDate").val(serviceDate);
+            $("#FromTime").val(fromTime);
+            $("#ToTime").val(toTime);
+            document.getElementById("SearchSitterForm").submit();
+            
+        });
+
+        //$('.btnPopupConfirmModal').click(function (e) {
+        //    alert("tt");
+        //    //var sitterid = $(this).data("sitterid");
+        //    //alert("sitter id:" + sitterid);
+        //});
+
+
+        //$('.modal-body-confirm-reservation').on("click",
+        //    "button.btnPopupConfirmModal",
+        //    function (e) {
+        //        alert("t");
+        //        return false;
+
+        //        //var staffAvailabilityIdToken = $(this).attr('data-staff-availability-id-token');
+        //        //var deleteHoursZoneId = $(this).attr('data-zone-id');
+
+        //        //$("#EditWorkingHoursModal").modal('hide');
+
+        //        ////EditWorkingHoursModal
+        //        //$('#deleteMsgPopup').modal('show');
+
+        //        //$('#staffAvailabilityIdToken').val(staffAvailabilityIdToken);
+        //        //$('#deleteHoursZoneId').val(deleteHoursZoneId);
+        //    });
+
     });
+
+    function openModalforConfirmation() {
+        alert("Sorry. Development is not completed yet.!!!");
+        return false;
+    }
 
 
 </script>
 
 <h2>Book a Sitter</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("SearchSitter", "Reservations", FormMethod.Post, new { data_ajax = "false", id = "SearchSitterForm" }))
 {
-    @Html.AntiForgeryToken()
-
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.ServiceDate)
     @Html.HiddenFor(m => m.FromTime)
     @Html.HiddenFor(m => m.ToTime)
     @Html.HiddenFor(m => m.User.Latitude)
     @Html.HiddenFor(m => m.User.Longitude)
+    @*@Html.HiddenFor(m => m.SitterListMarkerJsonSerialized)*@
 
 
     <div class="form-group">
@@ -92,10 +174,13 @@
         </div>
 
         <div class='col-sm-1 '>
-            <button type="button" class="btn btn-primary align-middle">Search</button>
+            <br/>
+            <button type="button" id="btnSearch" class="btn btn-primary align-middle">Search</button>
         </div>
 
     </div>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="form-group">
         <div id="map" class="col-sm-12"></div>
@@ -124,7 +209,7 @@
     </div>
 </div>
 
-   
+
 }
 
 
@@ -132,4 +217,26 @@
 
 <div>
     @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body modal-body-confirm-reservation">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
 </div>

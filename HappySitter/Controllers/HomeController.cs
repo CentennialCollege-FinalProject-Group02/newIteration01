@@ -22,7 +22,7 @@ namespace HappySitter.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Quality Manager Contact";
 
             return View();
         }
