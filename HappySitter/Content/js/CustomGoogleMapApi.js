@@ -6,7 +6,7 @@
 
 function createMarkerPage(jsonSitter) {
 
-    var sitterId = jsonSitter.id;
+    var sitterId = jsonSitter.Id;
     var userName = jsonSitter.UserName;
     var rateScore = jsonSitter.RateScore;
 
@@ -30,11 +30,12 @@ function createMarkerPage(jsonSitter) {
             "Platform Fee: $ @PlatformFee<br><br>" +
             "Total Cost(exclude for Hst): <strong>$@TotalCost</strong><br>" +
             "Hst: $@Hst<br><br>" +
-            "<button id='openConfirmModal' onclick='openModalforConfirmation()' class='btn btn-info btnPopupConfirmModal' data-toggle='modal' data-target='#myModal' data-ajax='false' " +
+            "<a id='openConfirmModal' class='btn btn-info btnPopupConfirmModal' data-toggle='modal' data-target='#myModal' data-ajax='false' " +
             "data-sitterid='@SitterId' data-costperhour='@CostPerHour' " +
+            "data-username='@UserName' data-ratescore='@rateScore' " +
             "data-costforservicehours='@CostForServiceHours' data-platformfee='@PlatformFee' " +
             "data-totalcost='@TotalCost' data-hst='@Hst' data-totalservicehours='@TotalServiceHours'>" +
-            "Book this Sitter</button>" +
+            "Book this Sitter</a>" +
             "</div>";
 
         htmlContents = htmlContents.replace(/@UserName/gi, userName);
@@ -49,7 +50,7 @@ function createMarkerPage(jsonSitter) {
 
     } else {
         htmlContents = "<div>" +
-            "<strong>@UserName</strong><br>" +
+            "Name:<strong>@UserName</strong><br>" +
             "</div>";
 
         htmlContents = htmlContents.replace(/@UserName/gi, userName);
@@ -104,7 +105,6 @@ function initMap() {
                     //infowindow.setContent(jsonSitters[i].UserName);
                     infowindow.setContent(createMarkerPage(jsonSitters[i]));
                     infowindow.open(map, marker);
-                    
                 }
             })(marker, i));
 

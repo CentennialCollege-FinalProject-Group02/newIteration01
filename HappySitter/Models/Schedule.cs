@@ -32,6 +32,8 @@ namespace HappySitter.Models
         public DayOfWeek DayOfWeek { get; set; }
         public TimeSpan FromTime { get; set; }
         public TimeSpan ToTime { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime DateLastModified { get; set; }
 
 

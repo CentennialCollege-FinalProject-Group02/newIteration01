@@ -328,3 +328,4 @@ D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migra
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.csprojAssemblyReference.cache
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.AddusertablecostPerHour.resources
 D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.addmorefieldonreservationtable.resources
+D:\VIsualStudioRepository\HappySitterOrg\HappySitter\obj\Debug\HappySitter.Migrations.addnullconditiontodate.resources

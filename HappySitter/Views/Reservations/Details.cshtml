@@ -1,29 +1,21 @@
-﻿@model HappySitter.Models.Reservation
+﻿@using HappySitter.Models
+@model HappySitter.Models.Reservation
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Reservation</h2>
 
 <div>
-    <h4>Reservation</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CustomerId)
+            @Html.DisplayNameFor(model => model.SitterUserName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CustomerId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SitterId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SitterId)
+            @Html.DisplayFor(model => model.SitterUserName)
         </dd>
 
         <dt>
@@ -48,6 +40,46 @@
 
         <dd>
             @Html.DisplayFor(model => model.ToTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlatformFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlatformFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CostPerHour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostPerHour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hst)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hst)
         </dd>
 
         <dt>
@@ -85,6 +117,118 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Go to Reservation List", "Index", null, new { @class = "btn btn-info", data_ajax = "false" })
+    @if (Model.ReservationStatus == ReservationStatus.PaymentWaiting)
+    {
+        <a id='openConfirmModal' class='btn btn-danger' data-toggle='modal' data-target='#myModal' data-ajax='false'>Payment</a>
+    }
+   
 </p>
+
+@using (Html.BeginForm("PaymentConfirmed", "Reservations", FormMethod.Post, new { data_ajax = "false", id = "formForPaymentConfirmed" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Payment for Your Reservation</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            @Html.HiddenFor(m => m.Id)
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.ServiceDate)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.ServiceDate)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.FromTime)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.FromTime)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.ToTime)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.ToTime)
+                                </dd>
+
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.PlatformFee)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.PlatformFee)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.TotalCost)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.TotalCost)
+                                </dd>
+
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Hst)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Hst)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Cost)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Cost)
+                                </dd>
+
+                                <dt>
+                                    Select Payment Method:
+                                </dt>
+                                <dd>
+                                    <input type="radio" id="Debit" name="paymentMethod" value="Debit">
+                                    <label for="Debit">Debit</label><br>
+                                    <input type="radio" id="Visa" name="paymentMethod" value="Visa">
+                                    <label for="Visa">Visa</label><br>
+                                    <input type="radio" id="Master" name="paymentMethod" value="Master">
+                                    <label for="Master">Master</label>
+                                </dd>
+                                <dt>
+                                    Card No:
+                                </dt>
+                                <dd>
+                                    <input type="text" id="CardNo" name="" value="">
+                                </dd>
+                                <dt>
+                                    Expire Date(MM/YY):
+                                </dt>
+                                <dd>
+                                    <input type="text" id="expireDate" name="" value="">
+                                </dd>
+                            </dl>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

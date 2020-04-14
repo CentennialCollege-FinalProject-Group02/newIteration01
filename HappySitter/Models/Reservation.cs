@@ -9,7 +9,8 @@ namespace HappySitter.Models
 
     public enum ReservationStatus
     {
-        Booked = 0
+        PaymentWaiting = 0
+        ,Booked
         , Canceled
         , Done
     }
@@ -23,11 +24,14 @@ namespace HappySitter.Models
         public string SitterId { get; set; }
         [Display(Name = "Sitter Name")]
         public string SitterUserName { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MMMM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ServiceDate { get; set; }
         public TimeSpan FromTime { get; set; }
         public TimeSpan ToTime { get; set; }
-        public double Cost { get; set; }
+        [Display(Name = "Total Cost(including Hst)")]
+        public double Cost { get; set; } //including HSG
         public double PlatformFee { get; set; }
+        [Display(Name = "Total Cost(excluding Hst)")]
         public double TotalCost { get; set; }
         public double CostPerHour { get; set; }
         public double Hst { get; set; }
@@ -35,7 +39,7 @@ namespace HappySitter.Models
         public ReservationStatus ReservationStatus { get; set; }
         [Display(Name = "Registered Date")]
         public DateTime RegistrationDateTime{ get; set; }
-        public DateTime DateLastModified { get; set; }
-        public DateTime CancelDateTime { get; set; }
+        public DateTime? DateLastModified { get; set; }
+        public DateTime? CancelDateTime { get; set; }
     }
 }

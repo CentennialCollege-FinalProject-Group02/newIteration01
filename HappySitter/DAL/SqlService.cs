@@ -12,14 +12,16 @@ namespace HappySitter.DAL
 {
     public class SqlService
     {
+        private static ApplicationDbContext _db = new ApplicationDbContext();
+
         public static List<GoogleMapMarker> GetAvailableSitters(SearchSitterViewModel model)
         {
 
             DateTime date = model.ServiceDate;
             TimeSpan fromTime = model.FromTime;
             TimeSpan toTime = model.ToTime;
-            double spendingHours = Math.Truncate(toTime.Subtract(fromTime).TotalHours * 100 ) / 100;
-            
+            double spendingHours = Math.Truncate(toTime.Subtract(fromTime).TotalHours * 100) / 100;
+
             DAL dal = new DAL(GetConnString("DefaultConnection"));
             string sqlText = @"
                select * from [dbo].[AspNetUsers] 
@@ -39,9 +41,9 @@ namespace HappySitter.DAL
                 new SqlParam("@AccountActiveStatus", HappySitter.Models.AccountActiveStatus.IsActivated)
             };
 
-            
 
-            DataTable dt = dal.ExecuteSelectCommand(sqlText, sqlParams).Tables[0];;
+
+            DataTable dt = dal.ExecuteSelectCommand(sqlText, sqlParams).Tables[0]; ;
 
             List<GoogleMapMarker> sitterList = new List<GoogleMapMarker>();
 
@@ -54,7 +56,7 @@ namespace HappySitter.DAL
                 double platformFee = costForServiceHours * platformFeePercentage / 100;
                 platformFee = Math.Truncate(platformFee * 100) / 100;
                 double totalCost = costForServiceHours + platformFee;
-                double hst = Math.Truncate(totalCost * 0.13 *100) /100;
+                double hst = Math.Truncate(totalCost * 0.13 * 100) / 100;
 
                 //temp for rate score
                 Random random = new Random();
@@ -79,6 +81,24 @@ namespace HappySitter.DAL
             }
 
             return sitterList;
+        }
+
+        public static string GetUserInfoById(string id, string returnField)
+        {
+            ApplicationUser user = _db.Users.Find(id);
+
+            if (returnField == "UserName")
+            {
+                return user.UserName;
+            }else if (returnField == "Address")
+            {
+                return user.StreetAddress + " " + user.City;
+            }else if (returnField == "PhoneNumber")
+            {
+                return user.PhoneNumber;
+            }
+
+            return "";
         }
 
         public static string GetConnString(string name)

@@ -1,23 +1,39 @@
-﻿@using Newtonsoft.Json
+﻿@using System.Web.Services.Description
+@using Newtonsoft.Json
 @model HappySitter.Models.SearchSitterViewModel
 
 @{
     ViewBag.Title = "Create";
+
+    string serviceDateString ="";
+    string fromTime = "";
+    string toTime = "";
+    DateTime serviceDate = DateTime.Now;
+
+    if (Session["ServiceDate"] != null)
+    {
+        DateTime serviceDateTemp = Convert.ToDateTime(Session["ServiceDate"]);
+        serviceDate = serviceDateTemp;
+        serviceDateString = serviceDateTemp.ToString("MMMM dd yyyy");
+        fromTime = Session["fromTime"].ToString();
+        toTime = Session["toTime"].ToString();
+    };
+
 }
 
 <style>
-       /* Always set the map height explicitly to define the size of the div
+    /* Always set the map height explicitly to define the size of the div
     * element that contains the map. */
-       #map {
-           min-height: 450px;
-           height: 100%;
-       }
-       /* Optional: Makes the sample page fill the window. */
-       html, body {
-           height: 100%;
-           margin: 0;
-           padding: 0;
-       }
+    #map {
+        min-height: 450px;
+        height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 </style>
 
 
@@ -26,7 +42,7 @@
 
 <script>
 
-    
+
 
     @*<script>
 
@@ -45,7 +61,7 @@
     {
         jsonSitters = JSON.parse(jsonModel);
     }
-    
+
 
     $(document).ready(function () {
 
@@ -70,7 +86,7 @@
         if ($("#ToTime").val() != "") {
             $("#datetimepicker2").data("DateTimePicker").date($("#ToTime").val());
         }
-    
+
         $('#btnSearch').click(function (e) {
 
             var serviceDate = $("#datepicker1").data("DateTimePicker").date().format("YYYY-MM-DD");
@@ -87,39 +103,46 @@
             $("#FromTime").val(fromTime);
             $("#ToTime").val(toTime);
             document.getElementById("SearchSitterForm").submit();
-            
+
         });
 
-        //$('.btnPopupConfirmModal').click(function (e) {
-        //    alert("tt");
-        //    //var sitterid = $(this).data("sitterid");
-        //    //alert("sitter id:" + sitterid);
-        //});
+        $('#myModal').on('shown.bs.modal',
+            function () {
+
+                var sitterId = $("#openConfirmModal").data("sitterid");
+                var userName = $("#openConfirmModal").data("username");
+                var rateScore = $("#openConfirmModal").data("ratescore");
+                var costPerHour = $("#openConfirmModal").data("costperhour");
+                var totalServiceHours = $("#openConfirmModal").data("totalservicehours");
+                var costForServiceHours = $("#openConfirmModal").data("costforservicehours");
+                var platformFee = $("#openConfirmModal").data("platformfee");
+                var totalCost = $("#openConfirmModal").data("totalcost");
+                var hst = $("#openConfirmModal").data("hst");
+
+                $("#sitterId").val(sitterId);
+                $("#sitterUserName").val(userName);
+                $("#rateScore").val(rateScore);
+                $("#costPerHour").val(costPerHour);
+                $("#totalServiceHours").val(totalServiceHours);
+                $("#costForServiceHours").val(costForServiceHours);
+                $("#platformFee").val(platformFee);
+                $("#totalCost").val(totalCost);
+                $("#hst").val(hst);
 
 
-        //$('.modal-body-confirm-reservation').on("click",
-        //    "button.btnPopupConfirmModal",
-        //    function (e) {
-        //        alert("t");
-        //        return false;
 
-        //        //var staffAvailabilityIdToken = $(this).attr('data-staff-availability-id-token');
-        //        //var deleteHoursZoneId = $(this).attr('data-zone-id');
 
-        //        //$("#EditWorkingHoursModal").modal('hide');
+                //var idAttr = $('#openConfirmModal').attr('id');
 
-        //        ////EditWorkingHoursModal
-        //        //$('#deleteMsgPopup').modal('show');
+                //alert("aaa");
+            });
 
-        //        //$('#staffAvailabilityIdToken').val(staffAvailabilityIdToken);
-        //        //$('#deleteHoursZoneId').val(deleteHoursZoneId);
-        //    });
-
+       
     });
 
     function openModalforConfirmation() {
         alert("Sorry. Development is not completed yet.!!!");
-        return false;
+        //return false;
     }
 
 
@@ -131,112 +154,137 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
-    @Html.HiddenFor(m => m.ServiceDate)
-    @Html.HiddenFor(m => m.FromTime)
-    @Html.HiddenFor(m => m.ToTime)
-    @Html.HiddenFor(m => m.User.Latitude)
-    @Html.HiddenFor(m => m.User.Longitude)
-    @*@Html.HiddenFor(m => m.SitterListMarkerJsonSerialized)*@
+    <div class="form-horizontal">
+        <hr />
+        @Html.HiddenFor(m => m.ServiceDate)
+        @Html.HiddenFor(m => m.FromTime)
+        @Html.HiddenFor(m => m.ToTime)
+        @Html.HiddenFor(m => m.User.Latitude)
+        @Html.HiddenFor(m => m.User.Longitude)
+        @*@Html.HiddenFor(m => m.SitterListMarkerJsonSerialized)*@
 
 
-    <div class="form-group">
+        <div class="form-group">
 
-        <div class='col-sm-3'>
-            <strong>Service Date:</strong>
-            <div class='input-group date' id='datepicker1' name="datepicker1">
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-time"></span>
-                </span>
+            <div class='col-sm-3'>
+                <strong>Service Date:</strong>
+                <div class='input-group date' id='datepicker1' name="datepicker1">
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
             </div>
-        </div>
 
-
-        <div class='col-sm-2'>
-            <strong>Time From</strong>
-            <div class='input-group date' id='datetimepicker1' name="datetimepicker1">
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-time"></span>
-                </span>
+            <div class='col-sm-2'>
+                <strong>Time From</strong>
+                <div class='input-group date' id='datetimepicker1' name="datetimepicker1">
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
             </div>
-        </div>
-        <div class='col-sm-2'>
-            <strong>Time To</strong>
-            <div class='input-group date' id='datetimepicker2' name="datetimepicker2">
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-time"></span>
-                </span>
+            <div class='col-sm-2'>
+                <strong>Time To</strong>
+                <div class='input-group date' id='datetimepicker2' name="datetimepicker2">
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
             </div>
+
+            <div class='col-sm-1 '>
+                <br />
+                <button type="button" id="btnSearch" class="btn btn-primary align-middle">Search</button>
+            </div>
+
         </div>
 
-        <div class='col-sm-1 '>
-            <br/>
-            <button type="button" id="btnSearch" class="btn btn-primary align-middle">Search</button>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div id="map" class="col-sm-12"></div>
+            <script src="/Content/js/CustomGoogleMapApi.js"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.ApiKey&libraries=places&language=en-US&callback=initMap" async defer></script>
         </div>
+
+
+
+        @*<div class="form-group">
+                <div class="col-sm-2">
+                    @Html.LabelFor(model => model.DayOfWeek, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-sm-10">
+                    @Html.EnumDropDownListFor(model => model.DayOfWeek, "Select a Day", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DayOfWeek, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
     </div>
-
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <div class="form-group">
-        <div id="map" class="col-sm-12"></div>
-        <script src="/Content/js/CustomGoogleMapApi.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.ApiKey&libraries=places&callback=initMap" async defer></script>
-    </div>
-
-
-
-    @*<div class="form-group">
-            <div class="col-sm-2">
-                @Html.LabelFor(model => model.DayOfWeek, htmlAttributes: new { @class = "control-label" })
-            </div>
-            <div class="col-sm-10">
-                @Html.EnumDropDownListFor(model => model.DayOfWeek, "Select a Day", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.DayOfWeek, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-
-
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <input id="btnSubmit" type="button" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 
 
 }
 
 
-
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<!-- Modal -->
+@using (Html.BeginForm("ReservationConfirmed", "Reservations", FormMethod.Post, new { data_ajax = "false", id = "formForReservationConfirmed" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Your Reservation</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <h3>Service Date: @serviceDateString</h3>
+                        </div>
+                        <div class="form-group">
+                            <h4>From: @fromTime&nbsp;&nbsp;~&nbsp;&nbsp;To: @toTime</h4>
+                        </div>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
-            </div>
-            <div class="modal-body modal-body-confirm-reservation">
-                <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                        <div class="form-group">
+
+                            @*"Id,CustomerId,,ServiceDate,FromTime,ToTime,ReservationStatus,RegistrationDateTime,DateLastModified,CancelDateTime"*@
+
+                            <input type="hidden" id="sitterId" name="sitterId" value="" />
+                            <input type="hidden" id="serviceDate" name="ServiceDate" value="@serviceDate" />
+                            <input type="hidden" id="fromTime" name="FromTime" value="@fromTime" />
+                            <input type="hidden" id="toTime" name="ToTime" value="@toTime" />
+
+                            <label for="sitterUserName" class="control-label">Sitter Name: </label>
+                            <input type="text" class="form-control" readonly id="sitterUserName" name="sitterUserName">
+                            <label for="rateScore" class="control-label">Rate Score:</label>
+                            <input type="text" class="form-control" readonly id="rateScore">
+                            <label for="costPerHour" class="control-label">Cost Per Hour($): </label>
+                            <input type="text" class="form-control" readonly id="costPerHour" name="costPerHour">
+                            <label for="totalServiceHours" class="control-label">Total Service Hours: </label>
+                            <input type="text" class="form-control" readonly id="totalServiceHours">
+                            <label for="costForServiceHours" class="control-label">Cost For ServiceHours: </label>
+                            <input type="text" class="form-control" readonly id="costForServiceHours">
+                            <label for="platformFee" class="control-label">Platform fee: </label>
+                            <input type="text" class="form-control" readonly id="platformFee" name="PlatformFee">
+                            <label for="totalCost" class="control-label">Total Cost(exclude for Hst): </label>
+                            <input type="text" class="form-control" readonly id="totalCost" name="TotalCost">
+                            <label for="hst" class="control-label">Hst: </label>
+                            <input type="text" class="form-control" readonly id="hst" name="Hst">
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
+
+}
